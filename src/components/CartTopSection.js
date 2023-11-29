@@ -6,6 +6,7 @@ width: "100%";
 display: flex;
 flex-direction: column;
 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+background-color: white;
 `
 const BreadCrumb = styled.div`
 display: flex;
@@ -41,7 +42,7 @@ background-color: white;
 cursor: pointer;
 `
 const ApproveButton = styled.button`
-margin: 0px 15px;
+margin: 0px 30px 0px 15px;
 border: none;
 height: 25px;
 width: 120px;

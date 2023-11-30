@@ -2,6 +2,7 @@ import React from 'react'
 import styled from "styled-components"
 import reeco from "../assets/reeco.svg"
 import caretDown from "../assets/caretDown.svg"
+import {useSelector} from "react-redux"
 
 const NavWrapper = styled.nav`
 background-color: #2E7D32;
@@ -55,6 +56,7 @@ const Logo = styled.img.attrs(() => ({
     padding-bottom: 0.3rem;
 `  
 const Navbar = () => {
+    const cartData = useSelector(state => state.cartData)
   return (
     <>
     <NavWrapper>
@@ -69,7 +71,7 @@ const Navbar = () => {
         <RightSide>
             <RightItem>
                 <div style={{position: "relative"}}>
-                    <ProductCount>1</ProductCount>
+                    <ProductCount>{cartData?.length}</ProductCount>
                 🛒
                 </div>                
             </RightItem>

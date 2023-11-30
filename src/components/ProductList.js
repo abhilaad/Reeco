@@ -1,43 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 import searchImg from "../assets/search.svg";
-import printerImg from "../assets/printer.svg"
+import printerImg from "../assets/printer.svg";
 import { CartTable } from "./CartTable";
+import { useDispatch } from "react-redux";
+import { addItem } from "../redux/cartSlice";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
   margin: 20px 40px 20px 40px;
   border-radius: 8px;
-  height: 300px;
+  height: auto;
 `;
 const TableInfo = styled.div`
-margin: 10px;
+  margin: 10px;
   width: 100%;
   display: flex;
   justify-content: space-between;
 `;
 const CartItemsWrapper = styled.div`
-margin: 10px;
-width: 100%;
-`
+  margin: 10px;
+  width: 100%;
+`;
 
 const RightSide = styled.div`
-display:flex;
-margin-right: 15px;
-
-`
+  display: flex;
+  margin-right: 15px;
+`;
 const AddButton = styled.button`
-margin: 5px 15px;
-border: 2px solid green;
-height: 30px;
-width: 80px;
-border-radius: 25px;
-color: green;
-font-weight: 700;
-background-color: white;
-cursor: pointer;
-`
+  margin: 5px 15px;
+  border: 2px solid green;
+  height: 30px;
+  width: 80px;
+  border-radius: 25px;
+  color: green;
+  font-weight: 700;
+  background-color: white;
+  cursor: pointer;
+`;
 
 const SearchWrapper = styled.div`
   width: 250px;
@@ -75,18 +76,19 @@ const SearchIcon = styled.img.attrs(() => ({
 }))`
   width: 25px;
   height: 10px;
-`
+`;
 const PrinterIcon = styled.img.attrs(() => ({
-    src: printerImg,
-    alt: "printer",
-  }))`
-    width: 2.2rem;
-    height: 1.7rem;
-    margin: 5px;
-    cursor: pointer;
-  `
+  src: printerImg,
+  alt: "printer",
+}))`
+  width: 2.2rem;
+  height: 1.7rem;
+  margin: 5px;
+  cursor: pointer;
+`;
 
 const ProductList = () => {
+  const dispatch = useDispatch();
   return (
     <>
       <Wrapper>
@@ -98,14 +100,26 @@ const ProductList = () => {
             </SearchButton>
           </SearchWrapper>
           <RightSide>
-          <AddButton>
-          Add Item
-          </AddButton>
-          <PrinterIcon />
+            <AddButton
+              onClick={() => {
+                const obj = {
+                  product_name: "Chicken Breast Fillets, Boneeless Chicken 65",
+                  brand: "Hormel Black Labelmany",
+                  price: "60.67",
+                  quantity: "1",
+                  id: Date.now(),
+                  status: "",
+                };
+                dispatch(addItem(obj))
+              }}
+            >
+              Add Item
+            </AddButton>
+            <PrinterIcon />
           </RightSide>
         </TableInfo>
         <CartItemsWrapper>
-        <CartTable />
+          <CartTable />
         </CartItemsWrapper>
       </Wrapper>
     </>

@@ -58,3 +58,44 @@ code {
   width: 0px;
 
 }
+
+.statusButton {
+  width: 125px;
+  height: 30px;
+  border: none;
+  border-radius: 25px;
+  color: white;
+}
+
+.statusButtonHidden {
+  width: 125px;
+  height: 30px;
+  visibility: hidden;
+}
+
+.modalWrapper {
+  position: fixed;
+  max-width: 400px;
+  width: 100%;
+  padding: 10px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  background-color: white;
+}
+
+.modalBackdrop {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 0;  
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -13,6 +13,14 @@ const Section = styled.div`
   height: auto;
   background-color: #f5f2f2;
 `;
+const Loading = styled.div`
+width: 100%;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+`
 
 function App() {  
   const dispatch = useDispatch()
@@ -33,7 +41,7 @@ function App() {
     <>
       <Section>
         <Navbar />
-        {loading ? <div style={{width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center",textAlign: "center"}}>Loading...</div> : (<>
+        {loading ? <Loading>Mocking Api Call...</Loading> : (<>
           <CartTopSection />
         <OrderInfo />
         <ProductList />

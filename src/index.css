@@ -73,29 +73,18 @@ code {
   visibility: hidden;
 }
 
-.modalWrapper {
-  position: fixed;
-  max-width: 400px;
-  width: 100%;
-  padding: 10px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-  background-color: white;
+.reasonButton{
+  background-color: red !important;
+  color: white !important;
 }
 
-.modalBackdrop {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 0;  
+button {
+  cursor: pointer;
 }
-
-.modalHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
 }

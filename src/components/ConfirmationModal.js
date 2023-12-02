@@ -1,24 +1,71 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { updateStatus } from "../redux/cartSlice";
+import styled from "styled-components";
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 0;
+`;
+const ModalWrapper = styled.div`
+  position: fixed;
+  max-width: 500px;
+  width: 100%;
+  padding: 10px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  background-color: white;
+`;
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const WrapperDiv = styled.div`
+  ${(props) =>
+    props.modalTitle && {
+      fontWeight: 700,
+      color: "black",
+      margin: "10px",
+    }}
+  ${(props) =>
+    props.actionSection && {
+      display: "flex",
+      flexDirection: "row-reverse",
+      fontWeight: "600",
+    }}
+    ${(props) =>
+    props.action && {
+      margin: "20px",
+      color: "black",
+      fontWeight: "700",
+      cursor: "pointer",
+    }}
+`;
+const ModalBody = styled.div`
+  display: "flex";
+  flex-direction: "column";
+  padding: 10px;
+`;
 
 const ConfirmationModal = ({ show, onClose, data, index }) => {
   const dispatch = useDispatch();
   return (
     show && (
       <>
-        <div
+        <ModalBackdrop
           className="modalBackdrop"
-          style={{ background: "rgba(0,0,0,.2)" }}
-        ></div>
-        <div className="modalWrapper">
-          <div className="modalHeader">
-            <div
-              className="modalTitle"
-              style={{ fontWeight: 600, color: "black", margin: "10px" }}
-            >
-              Missing Product
-            </div>
+          style={{ background: "rgba(0,0,0,.4)" }}
+        ></ModalBackdrop>
+        <ModalWrapper>
+          <ModalHeader className="modalHeader">
+            <WrapperDiv modalTitle>Missing Product</WrapperDiv>
             <span
               style={{
                 cursor: "pointer",
@@ -29,30 +76,12 @@ const ConfirmationModal = ({ show, onClose, data, index }) => {
             >
               X
             </span>
-          </div>
-          <div
-            className="modalBody"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "10px",
-            }}
-          >
-            <div>Is, 'Chicken Breast Fillets, Boneless ...' urgent ?</div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                fontWeight: "600",
-              }}
-            >
-              <div
-                style={{
-                  margin: "20px",
-                  color: "black",
-                  fontWeight: "700",
-                  cursor: "pointer",
-                }}
+          </ModalHeader>
+          <ModalBody>
+            <div>Is, '{data?.[index]?.product_name}' urgent ?</div>
+            <WrapperDiv actionSection>
+              <WrapperDiv
+                action
                 onClick={() => {
                   const obj = { ...data[index], status: "Missing-Urgent" };
                   const newData = [...data];
@@ -62,14 +91,9 @@ const ConfirmationModal = ({ show, onClose, data, index }) => {
                 }}
               >
                 Yes
-              </div>
-              <div
-                style={{
-                  margin: "20px",
-                  color: "black",
-                  fontWeight: "700",
-                  cursor: "pointer",
-                }}
+              </WrapperDiv>
+              <WrapperDiv
+                action
                 onClick={() => {
                   const obj = { ...data[index], status: "Missing" };
                   const newData = [...data];
@@ -79,10 +103,10 @@ const ConfirmationModal = ({ show, onClose, data, index }) => {
                 }}
               >
                 No
-              </div>
-            </div>
-          </div>
-        </div>
+              </WrapperDiv>
+            </WrapperDiv>
+          </ModalBody>
+        </ModalWrapper>
       </>
     )
   );

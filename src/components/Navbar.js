@@ -6,7 +6,7 @@ import {useSelector} from "react-redux"
 
 const NavWrapper = styled.nav`
 background-color: #2E7D32;
-width: "100%";
+width: 100%;
 display: flex;
 justify-content: space-between;
 color: white;

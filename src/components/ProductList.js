@@ -105,10 +105,13 @@ const ProductList = () => {
                 const obj = {
                   product_name: "Chicken Breast Fillets, Boneeless Chicken 65",
                   brand: "Hormel Black Labelmany",
-                  price: "60.67",
-                  quantity: "1",
+                  price: 60.67,
+                  quantity: 1,
                   id: Date.now(),
                   status: "",
+                  comment: "",
+                  old_price: 0,
+                  old_quantity: 0
                 };
                 dispatch(addItem(obj))
               }}

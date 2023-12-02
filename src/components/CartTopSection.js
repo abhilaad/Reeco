@@ -2,7 +2,7 @@ import React from 'react'
 import styled from "styled-components"
 
 const Wrapper = styled.div`
-width: "100%";
+width: 100%;
 display: flex;
 flex-direction: column;
 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

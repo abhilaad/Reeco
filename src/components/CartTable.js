@@ -69,7 +69,7 @@ const TableCell = styled.div`
       width: "25%",
       borderBottom: "1px solid black",
       padding: "10px",
-      height: "70px",
+    //   height: "70px",
       display: "flex",
       color: "gray",
     }}
@@ -82,14 +82,16 @@ const TableCell = styled.div`
     }}  
      ${(props) =>
     props.price === "price" && {
-      width: "12%",
+      width: "13%",
       borderBottom: "1px solid black",
       padding: "20px 10px 20px 5px",
       color: "gray",
+      display: "flex",
+      flexDirection: "column",
     }}  
     ${(props) =>
     props.quantity === "quantity" && {
-      width: "14%",
+      width: "13%",
       borderBottom: "1px solid black",
       padding: "20px 10px 20px 5px",
       color: "gray",
@@ -106,10 +108,14 @@ const TableCell = styled.div`
       width: "25%",
       borderBottom: "1px solid black",
       padding: "20px 10px 20px 5px",
-      height: "70px",
+    //   height: "70px",
       display: "flex",
       justifyContent: "space-evenly",
       backgroundColor: "#f5f2f2",
+    }}
+    ${(props) =>
+    props.oldPrice === "adjustHeight" && {
+      padding: "10px 10px 10px 5px",
     }}
 `;
 const ButtonColor = styled.button`
@@ -125,6 +131,12 @@ const ButtonColor = styled.button`
     props.val === "Missing-Urgent" && {
       backgroundColor: "red",
     }}
+    ${(props) =>
+    props.both === "both" && {
+      height: "45px",
+      padding: "5px 15px 5px 15px"
+    }}
+
 `;
 
 export const CartTable = () => {
@@ -136,18 +148,22 @@ export const CartTable = () => {
   if (cartData?.length === 0) return null;
   return (
     <div>
-      <EditModal
-        show={showEditModal}
-        onClose={setShowEditModal}
-        data={cartData}
-        index={currentIndex}
-      />
-      <ConfirmationModal
-        show={show}
-        onClose={setShow}
-        data={cartData}
-        index={currentIndex}
-      />
+      {showEditModal && (
+        <EditModal
+          show={showEditModal}
+          onClose={setShowEditModal}
+          data={cartData}
+          index={currentIndex}
+        />
+      )}
+      {show && (
+        <ConfirmationModal
+          show={show}
+          onClose={setShow}
+          data={cartData}
+          index={currentIndex}
+        />
+      )}
       <Wrapper>
         <TableHeader product>Product Name</TableHeader>
         <TableHeader brand>Brand</TableHeader>
@@ -172,23 +188,38 @@ export const CartTable = () => {
                   <span>{item?.product_name}</span>
                 </TableCell>
                 <TableCell brand="brand">{item?.brand}</TableCell>
-                <TableCell price="price">${item?.price} / 6*1LB</TableCell>
+                <TableCell
+                  price="price"
+                  oldPrice={
+                    item?.old_price !== 0 && item?.old_price !== item?.price
+                      ? "adjustHeight"
+                      : ""
+                  }
+                >
+                  <div>${item?.price} / 6*1LB</div>
+                  {item?.old_price !== 0 && item?.old_price !== item?.price && (
+                    <del style={{ color: "lightgray" }}>${item?.old_price}</del>
+                  )}
+                </TableCell>
+
                 <TableCell quantity="quantity">
                   {item?.quantity} x 6*1LB
                 </TableCell>
                 <TableCell total="total">
-                  {(item?.price * item?.quantity).toFixed(2)}
+                  ${(item?.price * item?.quantity).toFixed(2)}
                 </TableCell>
                 <TableCell status="status">
                   <ButtonColor
-                    val={item?.status}
+                  
+                    val={item?.old_price !== 0 || item?.old_quantity ? "Approved" : item?.status}
+                    both={item?.old_price !== 0 && item?.old_quantity !== 0 ? "both" : ""}
                     className={
-                      item?.status !== ""
+                      item?.status !== "" || item?.old_price !== 0 || item?.old_quantity !== 0
                         ? "statusButton "
-                        : "statusButtonHidden"
+                        :  "statusButtonHidden"
                     }
-                  >
-                    {item?.status}
+                  > 
+                    {item?.old_price !== 0 && item?.old_quantity !== 0 ? "Quantity and Price Updated" : item?.old_price  ? "Price Updated" : item?.old_quantity !==0 ? "Updated Quantity" :  item?.status}
                   </ButtonColor>
                   <img
                     src={item?.status === "Approved" ? greenTick : tick}
@@ -229,9 +260,9 @@ export const CartTable = () => {
                       paddingTop: "4px",
                       cursor: "pointer",
                     }}
-                    onClick={()=>{
-                        setCurrentIndex(index)
-                        setShowEditModal(true)
+                    onClick={() => {
+                      setCurrentIndex(index);
+                      setShowEditModal(true);
                     }}
                   >
                     Edit

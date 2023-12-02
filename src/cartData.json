@@ -3,26 +3,35 @@
     {
       "product_name": "Chicken Breast Fillets, Boneeless Chicken 65",
       "brand": "Hormel Black Labelmany",
-      "price": "60.67",
-      "quantity": "1",
+      "price": 60.67,
+      "quantity": 1,
       "id": "1",
-      "status": ""
+      "status": "",
+      "comment": "",
+      "old_price": 0,
+      "old_quantity": 0
     },
     {
         "product_name": "Apple Alphanso Fillets, Shimla Baby Apple 65",
-        "brand": "Apple Black Labelmany",
-        "price": "90.00",
-        "quantity": "4",
+        "brand": "American Roland",
+        "price": 90.00,
+        "quantity": 4,
         "id": "2",
-        "status": "Missing"
+        "status": "Missing",
+        "comment": "",
+        "old_price": 0,
+        "old_quantity": 0
     },
     {
         "product_name": "Avacado Mania Fillets",
         "brand": "Avacado Black Labelmany",
-        "price": "100.00",
-        "quantity": "10",
+        "price": 100.00,
+        "quantity": 10,
         "id": "3",
-        "status": "Missing-Urgent"
+        "status": "Missing-Urgent",
+        "comment": "",
+        "old_price": 0,
+        "old_quantity": 0
     }
   ]
 }

@@ -40,7 +40,7 @@ const IconItem = styled.span`
 
 const OrderInfo = () => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const cartData = useSelector((state) => state?.cartData);  
+  const cartData = useSelector((state) => state.cart.cartData);  
   const {isOrderApproved} = useSelector((state) => state.order);
   useEffect(() => {
     if (cartData?.length > 0) {

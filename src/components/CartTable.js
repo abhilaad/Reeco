@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import avacado from "../assets/avacado.jpg";
 import tick from "../assets/tick.svg";
@@ -139,21 +139,27 @@ const ButtonColor = styled.button`
 
 `;
 
-export const CartTable = () => {
+export const CartTable = ({filteredData, searchText}) => {
   const [show, setShow] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [data, setData] = useState([])
   const dispatch = useDispatch();
   const cartData = useSelector((state) => state.cart.cartData);  
   const {isOrderApproved} = useSelector((state) => state.order);
-  if (cartData?.length === 0) return null;
+  useEffect(()=>{
+    setData(filteredData)
+  },[filteredData])
+  if (data?.length === 0 && searchText !== "") return (<>
+  <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "20vh"}}>No Item found</div>
+  </>);
   return (
     <div>
       {showEditModal && (
         <EditModal
           show={showEditModal}
           onClose={setShowEditModal}
-          data={cartData}
+          data={data}
           index={currentIndex}
         />
       )}
@@ -161,7 +167,7 @@ export const CartTable = () => {
         <ConfirmationModal
           show={show}
           onClose={setShow}
-          data={cartData}
+          data={data}
           index={currentIndex}
         />
       )}
@@ -174,8 +180,8 @@ export const CartTable = () => {
         <TableHeader status="status">Status</TableHeader>
       </Wrapper>
       <div>
-        {cartData?.length > 0 &&
-          cartData.map((item, index) => {
+        {data?.length > 0 &&
+          data.map((item, index) => {
             return (
               <Wrapper key={index}>
                 <TableCell product="product">
@@ -235,7 +241,8 @@ export const CartTable = () => {
                           status: item?.status !== "Approved" ? "Approved" : "",
                         };
                         const newData = [...cartData];
-                        newData[index] = obj;
+                        const getIndex = newData.findIndex((ele)=> ele?.id === item?.id)
+                        newData[getIndex] = obj;
                         dispatch(updateStatus(newData));
                       }
                     }}

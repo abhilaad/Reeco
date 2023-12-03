@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateStatus } from "../redux/cartSlice";
 import styled from "styled-components";
 
@@ -56,6 +56,7 @@ const ModalBody = styled.div`
 
 const ConfirmationModal = ({ show, onClose, data, index }) => {
   const dispatch = useDispatch();
+  const cartData = useSelector((state) => state.cart.cartData); 
   return (
     show && (
       <>
@@ -84,8 +85,9 @@ const ConfirmationModal = ({ show, onClose, data, index }) => {
                 action
                 onClick={() => {
                   const obj = { ...data[index], status: "Missing-Urgent" };
-                  const newData = [...data];
-                  newData[index] = obj;
+                  const newData = [...cartData];
+                  const getIndex = newData.findIndex((ele)=> ele?.id === data?.[index]?.id)
+                  newData[getIndex] = obj;
                   dispatch(updateStatus(newData));
                   onClose(false);
                 }}
@@ -96,8 +98,9 @@ const ConfirmationModal = ({ show, onClose, data, index }) => {
                 action
                 onClick={() => {
                   const obj = { ...data[index], status: "Missing" };
-                  const newData = [...data];
-                  newData[index] = obj;
+                  const newData = [...cartData];
+                  const getIndex = newData.findIndex((ele)=> ele?.id === data?.[index]?.id)
+                  newData[getIndex] = obj;
                   dispatch(updateStatus(newData));
                   onClose(false);
                 }}

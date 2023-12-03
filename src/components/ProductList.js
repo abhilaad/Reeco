@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import searchImg from "../assets/search.svg";
 import printerImg from "../assets/printer.svg";
@@ -89,13 +89,20 @@ const PrinterIcon = styled.img.attrs(() => ({
 
 const ProductList = () => {
   const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("")
+  const [filteredData, setFilteredData] = useState([])
+  const cartData = useSelector((state) => state.cart.cartData);  
   const { isOrderApproved } = useSelector((state) => state.order);
+  useEffect(()=>{
+    const filterData = cartData?.filter((ele)=> ele?.product_name?.toLowerCase()?.includes(searchText?.toLowerCase()))
+    setFilteredData(filterData)
+  },[searchText, cartData])
   return (
     <>
       <Wrapper>
         <TableInfo>
           <SearchWrapper>
-            <SearchInput />
+            <SearchInput value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} />
             <SearchButton>
               <SearchIcon />
             </SearchButton>
@@ -126,7 +133,7 @@ const ProductList = () => {
           </RightSide>
         </TableInfo>
         <CartItemsWrapper>
-          <CartTable />
+          <CartTable filteredData={filteredData} searchText={searchText} />
         </CartItemsWrapper>
       </Wrapper>
     </>

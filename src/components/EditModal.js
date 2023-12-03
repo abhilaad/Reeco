@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import avacado from "../assets/avacado.jpg";
 import { updateStatus } from "../redux/cartSlice";
 
@@ -268,6 +268,7 @@ const EditModal = ({ show, onClose, data, index }) => {
   const [oldQuantity, setOldQuantity] = useState(
     data?.[index]?.old_quantity || 0
   );
+  const cartData = useSelector((state) => state.cart.cartData); 
   const dispatch = useDispatch();
 
   const handleSend = () => {
@@ -284,8 +285,9 @@ const EditModal = ({ show, onClose, data, index }) => {
         old_price: oldPrice,
         old_quantity: oldQuantity
       };
-      const newData = [...data];
-      newData[index] = obj;
+      const newData = [...cartData];
+      const getIndex = newData.findIndex((ele)=> ele?.id === data?.[index]?.id)
+      newData[getIndex] = obj;
       dispatch(updateStatus(newData));
       onClose(false);
     }

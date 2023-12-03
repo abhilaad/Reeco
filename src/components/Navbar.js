@@ -56,7 +56,7 @@ const Logo = styled.img.attrs(() => ({
     padding-bottom: 0.3rem;
 `  
 const Navbar = () => {
-    const cartData = useSelector(state => state.cartData)
+    const cartData = useSelector(state => state.cart.cartData)
   return (
     <>
     <NavWrapper>

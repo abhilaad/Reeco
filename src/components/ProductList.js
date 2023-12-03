@@ -3,7 +3,7 @@ import styled from "styled-components";
 import searchImg from "../assets/search.svg";
 import printerImg from "../assets/printer.svg";
 import { CartTable } from "./CartTable";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../redux/cartSlice";
 const Wrapper = styled.div`
   display: flex;
@@ -30,14 +30,14 @@ const RightSide = styled.div`
 `;
 const AddButton = styled.button`
   margin: 5px 15px;
-  border: 2px solid green;
+  border: ${props => props?.isapproved === true ? "none" : "2px solid green"}; 
   height: 30px;
   width: 80px;
   border-radius: 25px;
-  color: green;
+  color: ${props => props?.isapproved === true ? "darkgray" : "green"};
   font-weight: 700;
-  background-color: white;
-  cursor: pointer;
+  background-color: ${props => props?.isapproved === true ? "lightgray" : "white"};
+  cursor: ${props => props?.isapproved === true ? "initial" : "pointer"};  
 `;
 
 const SearchWrapper = styled.div`
@@ -89,6 +89,7 @@ const PrinterIcon = styled.img.attrs(() => ({
 
 const ProductList = () => {
   const dispatch = useDispatch();
+  const { isOrderApproved } = useSelector((state) => state.order);
   return (
     <>
       <Wrapper>
@@ -100,20 +101,23 @@ const ProductList = () => {
             </SearchButton>
           </SearchWrapper>
           <RightSide>
-            <AddButton
+            <AddButton isapproved={isOrderApproved}
               onClick={() => {
-                const obj = {
-                  product_name: "Chicken Breast Fillets, Boneeless Chicken 65",
-                  brand: "Hormel Black Labelmany",
-                  price: 60.67,
-                  quantity: 1,
-                  id: Date.now(),
-                  status: "",
-                  comment: "",
-                  old_price: 0,
-                  old_quantity: 0
-                };
-                dispatch(addItem(obj))
+                if (!isOrderApproved) {
+                  const obj = {
+                    product_name:
+                      "Chicken Breast Fillets, Boneeless Chicken 65",
+                    brand: "Hormel Black Labelmany",
+                    price: 60.67,
+                    quantity: 1,
+                    id: Date.now(),
+                    status: "",
+                    comment: "",
+                    old_price: 0,
+                    old_quantity: 0,
+                  };
+                  dispatch(addItem(obj));
+                }
               }}
             >
               Add Item

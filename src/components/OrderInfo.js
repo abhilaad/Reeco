@@ -40,7 +40,8 @@ const IconItem = styled.span`
 
 const OrderInfo = () => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const cartData = useSelector((state) => state?.cartData);
+  const cartData = useSelector((state) => state?.cartData);  
+  const {isOrderApproved} = useSelector((state) => state.order);
   useEffect(() => {
     if (cartData?.length > 0) {
       let sum = 0;
@@ -93,7 +94,7 @@ const OrderInfo = () => {
         <Divider />
         <Items>
           <FirstTitle>Status</FirstTitle>
-          <SecondTitle>Awaiting your approval</SecondTitle>
+          <SecondTitle>{isOrderApproved ? "Order Approved" : "Awaiting your approval"}</SecondTitle>
         </Items>
       </Wrapper>
     </>

@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from "styled-components"
+import { useDispatch, useSelector } from 'react-redux'
+import { setOrderApproved } from '../redux/OrderSlice'
 
 const Wrapper = styled.div`
 width: 100%;
@@ -39,7 +41,7 @@ border-radius: 25px;
 color: green;
 font-weight: 700;
 background-color: white;
-cursor: pointer;
+cursor: ${props => props?.isapproved === true ? "pointer" : "initial"};
 `
 const ApproveButton = styled.button`
 margin: 0px 30px 0px 15px;
@@ -49,9 +51,11 @@ width: 120px;
 border-radius: 25px;
 color: white;
 background-color: green;
-cursor: pointer;
+cursor: ${props => props?.isapproved === true ? "initial" : "pointer"};;
 `
 const CartTopSection = () => {
+  const dispatch = useDispatch()
+  const {isOrderApproved} = useSelector((state) => state.order);
   return (
     <>
     <Wrapper>
@@ -63,11 +67,19 @@ const CartTopSection = () => {
     <SecondLine>
         <BoldText>Order 32457ABC</BoldText>
         <RightItem>
-            <BackButton>
+            <BackButton isapproved={isOrderApproved} onClick={()=>{
+              if(isOrderApproved){
+                dispatch(setOrderApproved(false))
+              }
+            }}>
                 Back
             </BackButton>
-            <ApproveButton>
-                Approve order
+            <ApproveButton isapproved={isOrderApproved} onClick={()=>{
+              if(!isOrderApproved){
+                dispatch(setOrderApproved(true))
+              }
+            }}>
+                {isOrderApproved ? "Approved" : "Approve order"}
             </ApproveButton>
         </RightItem>
     </SecondLine>

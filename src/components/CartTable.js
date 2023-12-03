@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 `;
 const TableHeader = styled.div`
   ${(props) =>
-    props.product && {
+    props.product==="product" && {
       width: "25%",
       borderTop: "1px solid lightGray",
       borderLeft: "1px solid lightGray",
@@ -29,7 +29,7 @@ const TableHeader = styled.div`
       fontWeight: "550",
     }}
   ${(props) =>
-    props.brand && {
+    props.brand==="brand" && {
       width: "12%",
       borderBottom: "1px solid lightGray",
       borderTop: "1px solid lightGray",
@@ -37,7 +37,7 @@ const TableHeader = styled.div`
       fontWeight: "550",
     }}  
     ${(props) =>
-    props.quantity && {
+    props.quantity==="quantity" && {
       width: "14%",
       borderBottom: "1px solid lightGray",
       borderTop: "1px solid lightGray",
@@ -45,7 +45,7 @@ const TableHeader = styled.div`
       fontWeight: "550",
     }} 
     ${(props) =>
-    props.total && {
+    props.total==="total" && {
       width: "10%",
       borderBottom: "1px solid lightGray",
       borderTop: "1px solid lightGray",
@@ -53,7 +53,7 @@ const TableHeader = styled.div`
       fontWeight: "550",
     }}
     ${(props) =>
-    props.status && {
+    props.status==="status" && {
       width: "25%",
       borderBottom: "1px solid lightGray",
       borderTop: "1px solid lightGray",
@@ -114,7 +114,7 @@ const TableCell = styled.div`
       backgroundColor: "#f5f2f2",
     }}
     ${(props) =>
-    props.oldPrice === "adjustHeight" && {
+    props.oldprice === "adjustHeight" && {
       padding: "10px 10px 10px 5px",
     }}
 `;
@@ -144,7 +144,8 @@ export const CartTable = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const dispatch = useDispatch();
-  const cartData = useSelector((state) => state.cartData);
+  const cartData = useSelector((state) => state.cart.cartData);  
+  const {isOrderApproved} = useSelector((state) => state.order);
   if (cartData?.length === 0) return null;
   return (
     <div>
@@ -165,12 +166,12 @@ export const CartTable = () => {
         />
       )}
       <Wrapper>
-        <TableHeader product>Product Name</TableHeader>
-        <TableHeader brand>Brand</TableHeader>
-        <TableHeader brand>Price</TableHeader>
-        <TableHeader quantity>Quantity</TableHeader>
-        <TableHeader total>Total</TableHeader>
-        <TableHeader status>Status</TableHeader>
+        <TableHeader product="product">Product Name</TableHeader>
+        <TableHeader brand="brand">Brand</TableHeader>
+        <TableHeader brand="brand">Price</TableHeader>
+        <TableHeader quantity="quantity">Quantity</TableHeader>
+        <TableHeader total="total">Total</TableHeader>
+        <TableHeader status="status">Status</TableHeader>
       </Wrapper>
       <div>
         {cartData?.length > 0 &&
@@ -190,7 +191,7 @@ export const CartTable = () => {
                 <TableCell brand="brand">{item?.brand}</TableCell>
                 <TableCell
                   price="price"
-                  oldPrice={
+                  oldprice={
                     item?.old_price !== 0 && item?.old_price !== item?.price
                       ? "adjustHeight"
                       : ""
@@ -226,15 +227,17 @@ export const CartTable = () => {
                     alt="tick"
                     width="25px"
                     height="25px"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: isOrderApproved ? "initial" : "pointer" }}
                     onClick={() => {
-                      const obj = {
-                        ...item,
-                        status: item?.status !== "Approved" ? "Approved" : "",
-                      };
-                      const newData = [...cartData];
-                      newData[index] = obj;
-                      dispatch(updateStatus(newData));
+                      if(!isOrderApproved){
+                        const obj = {
+                          ...item,
+                          status: item?.status !== "Approved" ? "Approved" : "",
+                        };
+                        const newData = [...cartData];
+                        newData[index] = obj;
+                        dispatch(updateStatus(newData));
+                      }
                     }}
                   />
                   <img
@@ -248,21 +251,25 @@ export const CartTable = () => {
                     alt="cross"
                     width="30px"
                     height="30px"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: isOrderApproved ? "initial" : "pointer" }}
                     onClick={() => {
-                      setCurrentIndex(index);
+                      if(!isOrderApproved){
+                        setCurrentIndex(index);
                       setShow(true);
+                      }
                     }}
                   />
                   <span
                     style={{
                       color: "gray",
                       paddingTop: "4px",
-                      cursor: "pointer",
+                      cursor: isOrderApproved ? "initial" : "pointer",
                     }}
                     onClick={() => {
-                      setCurrentIndex(index);
-                      setShowEditModal(true);
+                      if(!isOrderApproved){
+                        setCurrentIndex(index);
+                        setShowEditModal(true);
+                      }
                     }}
                   >
                     Edit
